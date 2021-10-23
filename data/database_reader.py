@@ -41,14 +41,14 @@ def execute_many(conn, datafrm, table):
         cursor.close()
 
 
-connection = pg.connect("host=group3-1-i.comp.nus.edu.sg dbname=healthrecords "
+connection = pg.connect("host=group3-1-i.comp.nus.edu.sg dbname=healthrecord_encrypted "
                         "port= 5435 user=postgres password=mysecretpassword")
 connection.autocommit = True
-covid_test = pd.read_sql('select nric,test_result from covid19_test_results', con=connection)
-vaccination_results = pd.read_sql('select nric,vaccination_status,vaccine_type from vaccination_results',
+covid_test = pd.read_sql("select nric,pgp_sym_decrypt(test_result::bytea, 'mysecretkey') as test_result from  covid19_test_results", con=connection)
+vaccination_results = pd.read_sql("select nric,pgp_sym_decrypt(vaccination_status::bytea, 'mysecretkey') as vaccination_status ,pgp_sym_decrypt(vaccine_type ::bytea, 'mysecretkey') as vaccine_type from vaccination_results",
                                   con=connection)
-particulars = pd.read_sql('select nric,gender,race,age from user_particulars', con=connection)
-address = pd.read_sql('select nric,area from user_address', con=connection)
+particulars = pd.read_sql("select nric,pgp_sym_decrypt(gender::bytea, 'mysecretkey') as gender,pgp_sym_decrypt(race::bytea, 'mysecretkey') as race,pgp_sym_decrypt(age::bytea, 'mysecretkey') as age from user_particulars", con=connection)
+address = pd.read_sql("select nric,pgp_sym_decrypt(area::bytea, 'mysecretkey') as area from user_address", con=connection)
 
 covid_test['test_result'] = covid_test['test_result'].replace(["0", "1"], ["Negative", "Positive"])
 vaccination_results['vaccination_status'] = vaccination_results['vaccination_status'].replace \
