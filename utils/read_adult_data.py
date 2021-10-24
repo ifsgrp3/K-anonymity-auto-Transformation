@@ -2,10 +2,10 @@
 # coding=utf-8
 
 
-ATT_NAME = ['age', 'vaccination_status', 'vaccine_type','covid_19_status', 'area',
-            'gender', 'race']
-QI_INDEX = [0, 2, 3, 4, 5, 6]
-IS_CAT = [False, True, True,True,True,True]
+ATT_NAME = ['age','vaccine_type','covid_19_status', 'area',
+            'gender', 'race','vaccination_status']
+QI_INDEX = [3,5]
+IS_CAT = [True,True]
 SA_INDEX = 1
 __DEBUG = False
 
@@ -31,7 +31,7 @@ def read_data():
         intuitive_dict.append(dict())
         intuitive_number.append(0)
         intuitive_order.append(list())
-    data_file = open('utils/adult.data', 'rU')
+    data_file = open('data/adult.data', 'rU')
     for line in data_file:
         line = line.strip()
         # remove empty and incomplete lines

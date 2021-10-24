@@ -10,7 +10,7 @@ from utils.read_adult_data import read_data as read_adult
 import sys, copy, random
 
 DATA_SELECT = 'a'
-RELAX = False
+RELAX = True
 INTUITIVE_ORDER = None
 
 
