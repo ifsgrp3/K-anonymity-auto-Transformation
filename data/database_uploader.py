@@ -69,10 +69,10 @@ if connection != None:
         print("public_data table is created successfully................")
         aheaders = ["area", "race", "vaccine_type"]
         headers = ["age", "vaccine_type", "test_result", "area", "gender", "race", "vaccination_status"]
-        anonymized = pd.read_table("anonymized.data", sep=';',
-                                   names=aheaders)
-        adult_table = pd.read_table("adult.data", sep=',',
-                                    names=headers)
+        #anonymized = pd.read_table("anonymized.data", sep=';',names=aheaders)
+        #adult_table = pd.read_table("adult.data", sep=',',names=headers)
+        anonymized = pd.read_table("/home/sadm/IFS/K-anonymity-auto-Transformation/data/anonymized.data", sep=';',names=aheaders)
+        adult_table = pd.read_table("/home/sadm/IFS/K-anonymity-auto-Transformation/data/adult.data", sep=',', names=headers)
         sub_df = adult_table.drop(columns=["area", "race", "vaccine_type"])
 
         anonymized['C'] = np.arange(len(anonymized))
