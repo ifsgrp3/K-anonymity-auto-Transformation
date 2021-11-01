@@ -18,7 +18,8 @@ def write_to_file(result):
     """
     write the anonymized result to anonymized.data
     """
-    with open("data/anonymized.data", "w") as output:
+    #with open("data/anonymized.data", "w") as output:
+    with open("/home/sadm/IFS/K-anonymity-auto-Transformation/data/anonymized.data", "w") as output:    
         for r in result:
             output.write(';'.join(r) + '\n')
 
