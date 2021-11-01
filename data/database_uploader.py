@@ -42,6 +42,22 @@ def execute_many(conn, datafrm, table):
         cursor.close()
 
 
+
+aheaders = ["area", "race", "vaccine_type"]
+headers = ["age", "vaccine_type", "test_result", "area", "gender", "race", "vaccination_status"]
+#anonymized = pd.read_table("anonymized.data", sep=';',names=aheaders)
+anonymized = pd.read_table("/home/sadm/IFS/K-anonymity-auto-Transformation/data/anonymized.data", sep=';',names=aheaders)
+#adult_table = pd.read_table("adult.data", sep=',',names=headers)
+adult_table = pd.read_table("/home/sadm/IFS/K-anonymity-auto-Transformation/data/adult.data", sep=',', names=headers)
+sub_df = adult_table.drop(columns=["area", "race", "vaccine_type"])
+
+anonymized['C'] = np.arange(len(anonymized))
+sub_df['C'] = np.arange(len(sub_df))
+df = pd.merge(sub_df, anonymized, on='C',how="inner")
+df = df.drop('C', axis=1)
+
+df.to_csv('anonymized_results')
+
 connection = pg.connect("host=group3-1-i.comp.nus.edu.sg dbname=healthrecord_encrypted "
                         "port= 5435 user=postgres password=mysecretpassword")
 connection.autocommit = True
@@ -67,18 +83,7 @@ if connection != None:
         # Creating a table
         cursor.execute(sql);
         print("public_data table is created successfully................")
-        aheaders = ["area", "race", "vaccine_type"]
-        headers = ["age", "vaccine_type", "test_result", "area", "gender", "race", "vaccination_status"]
-        anonymized = pd.read_table("anonymized.data", sep=';',
-                                   names=aheaders)
-        adult_table = pd.read_table("adult.data", sep=',',
-                                    names=headers)
-        sub_df = adult_table.drop(columns=["area", "race", "vaccine_type"])
 
-        anonymized['C'] = np.arange(len(anonymized))
-        sub_df['C'] = np.arange(len(sub_df))
-        df = pd.merge(sub_df, anonymized, on='C',how="inner")
-        df = df.drop('C', axis=1)
 
         # Run the execute_many method
         execute_many(connection, df, 'public_data')
